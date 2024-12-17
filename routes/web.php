@@ -27,3 +27,14 @@ Route::middleware(['admin'])->group(function () {
 Route::get('teacher/dashboard', [DashboardController::class, 'dashboard'])->middleware('teacher');
 
 Route::get('parent/dashboard', [DashboardController::class, 'dashboard'])->middleware('parent');
+
+// --- Parent rutas INE/Photo --- //
+Route::get('parent/dashboard/documentos', [DashboardController::class, 'agregarDocumentos'])->name('parent.agregar');
+Route::put('parent/dashboard/documentos', [DashboardController::class, 'documentos'])->name('parent.docs');
+
+// --- Autorizado rutas --- //
+Route::get('parent/dashboard/autorizar', [DashboardController::class, 'autorizar'])->name('parent.autorizar');
+Route::put('parent/dashboard/autorizado/agregar', [DashboardController::class, 'nuevoAutorizado'])->name('autorizado.agregar');
+Route::put('parent/dashboard/autorizado/{id}/editar', [DashboardController::class, 'editarAutorizado'])->name('autorizado.editar');
+Route::get('parent/dashboard/autorizado/{id}/editar', [DashboardController::class, 'editAutorizado'])->name('autorizado.edit');
+Route::delete('parent/dashboard/autorizado/eliminar/{id}', [DashboardController::class, 'eliminarAutorizado'])->name('autorizado.eliminar');

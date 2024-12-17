@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('parents', function (Blueprint $table) {
             $table->id();
-            $table->string('address');
-            $table->string('mpio');
-            $table->string('ocupation');
-            $table->string('company');
-            $table->string('relationship');
-            $table->boolean('status')->comment(' 0: Inactive, 1: Active ')->default(true);
             $table->foreignId('user_id')->constrained();  
-            $table->foreignId('user_type')->constrained(table: 'users', indexName: 'user_type');         
+            $table->string('address')->nullable();
+            $table->string('mpio')->nullable();
+            $table->string('ocupation')->nullable();
+            $table->string('company')->nullable();
+            $table->string('relationship')->nullable();
+            $table->string('foto')->nullable();
+            $table->string('ine')->nullable();
+            $table->boolean('status')->comment(' 0: Inactive, 1: Active ')->default(true);
+            $table->foreignId('user_type')->constrained(table: 'users', indexName: 'user_type')->nullable();         
             $table->timestamps();
         });
     }

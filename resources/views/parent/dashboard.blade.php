@@ -101,26 +101,133 @@
                             </h3>
                             <div class="card-tools">
                                 <ul class="nav nav-pills ml-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Dercargar</a>
-                                    </li>
+                                    <li>
+                                        <button type="button" class="btn" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>  
+                                    </li>                                                    
                                 </ul>
                             </div>
                         </div><!-- /.card-header -->
                         <div class="card-body">
-                            <div class="tab-content p-0">
-                                <!-- //////////// contenido QR //////////////-->
-                                <div style="padding-left: 30%;">
-                                    <x-qr>    
-                                    Student(s)        
-                                    @foreach ($students as $std)                                            
-                                    {{$std->name}}
-                                    {{$std->last_name}}
-                                    {{$std->last_name2}}
-                                    {{$std->grade}}                                                                                     
-                                    @endforeach            
-                                    </x-qr>
-                                </div>
+                            <div class="pl-5">
+                                {{-- <div class="justify-content-center"> --}}
+                                    <ul class="nav nav-pills ml-auto">
+                                        <li > 
+                                            @if (@empty($parents->id))                                                
+                                            <a href="{{ route('parent.agregar') }}" class="page-link"><i class="fas fa-plus"></i> Agregar Documentos</a>
+                                            @endif  
+                                        </li>         
+                                        <li>
+                                            @if ($cantAutorizados<2 && (!@empty($parents->id)) )                                            
+                                                 <a href="{{ route('parent.autorizar') }}" class="page-link"><i class="fas fa-plus"></i> Autorizado</a>
+                                            @endif 
+                                        </li>                                          
+                                    </ul>
+                                {{-- </div> --}}
+                                <!---- contenido QR ------>                                  
+                            </div>
+                            <br>
+                            <div class="container">
+                                @if (!@empty($parents->id))
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">{{Auth::user()->name}}</h3>
+                                            <div class="card-tools">
+                                                <ul class="nav nav-pills ml-auto">
+                                                    <li>
+                                                        <a href="{{ route('parent.docs') }}" class="page-link"><i class="fas fa-plus"></i> Modificar</a>
+                                                    </li>   
+                                                    <li>
+                                                        <button type="button" class="btn" data-card-widget="collapse">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>  
+                                                    </li>                                        
+                                                </ul>
+                                            </div>
+                                        </div>    
+                                        <div class="card-body">                          
+                                            <div class="row justify-content-md-left">   
+                                                {{-- Mostrar info Papa --}}
+                                                <div class="col-sm-3 col-4">
+                                                    @if (@empty($parents->foto))
+                                                        <img src="{{url('public/fotos/Perfil.jpg')}}" 
+                                                            style="width: 10%; min-width: 100px" 
+                                                            class="rounded">
+                                                    @else
+                                                    <img src="{{url('public/'.$parents->foto)}}" 
+                                                    style="width: 10%; min-width: 100px" class="rounded">
+                                                    @endif
+                                                </div>                                        
+
+                                                <div class="col-sm-3 col-4">
+                                                    @if (@empty($parents->ine))
+                                                        <img src="{{url('public/ines/INE.png')}}" 
+                                                            style="width: 30%; min-width: 120px" 
+                                                            class="rounded">
+                                                    @else
+                                                    <img src="{{url('public/'.$parents->ine)}}" 
+                                                    style="width: 30%; min-width: 120px" class="rounded">
+                                                    @endif   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                @endif
+
+                                {{-- Mostrar info Autorizados --}}
+                                @foreach ($autorizados as $autorizado)
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">{{$autorizado->nombre}}</h3>
+                                                <div class="card-tools">  
+                                                    <ul class="nav nav-pills ml-auto">
+                                                        <li >
+                                                            <a href="{{ route('autorizado.edit', $autorizado->id ) }}" class="page-link"><i class="fas fa-plus"></i> Modificar</a>
+                                                        </li> 
+                                                        <li class="pl-2">
+                                                            <form action="{{ route('autorizado.eliminar', $autorizado->id ) }}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Eliminar</button>
+                                                            </form> 
+                                                        </li>                                                          
+                                                        <li>
+                                                            <button type="button" class="btn" data-card-widget="collapse">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>  
+                                                        </li>                                       
+                                                    </ul>
+                                                </div> 
+                                        </div>   
+                                        <div class="card-body">
+                                            <div class="row justify-content-md-left">  
+                                                <div class="col-sm-3 col-4">
+                                                    @if (@empty($autorizado->foto))
+                                                    <img src="{{url('public/fotos/Perfil.jpg')}}" 
+                                                    style="width: 10%; min-width: 100px" 
+                                                    class="rounded">
+                                                    @else
+                                                    <img src="{{url('public/'.$autorizado->foto)}}" 
+                                                    style="width: 10%; min-width: 100px" class="rounded">
+                                                    @endif
+                                                </div>                                        
+                                                
+                                                <div class="col-sm-3 col-4">
+                                                    @if (@empty($autorizado->ine))
+                                                    <img src="{{url('public/ines/INE.png')}}" 
+                                                    style="width: 30%; min-width: 120px" 
+                                                    class="rounded">
+                                                    @else
+                                                    <img src="{{url('public/'.$autorizado->ine)}}" 
+                                                    style="width: 30%; min-width: 120px" class="rounded">
+                                                    @endif   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                        
                             </div>
                         </div><!-- /.card-body -->
                     </div>
@@ -387,7 +494,7 @@
 
                             <div class="card-tools">
                                 <ul class="pagination pagination-sm">
-                                    <li class="page-item"><a href="#" class="page-link">&laquo;</a></li>
+                                    <li class="page-item"><a href="{{ route('parent.autorizar') }}" class="page-link">&laquo;</a></li>
                                     <li class="page-item"><a href="#" class="page-link">1</a></li>
                                     <li class="page-item"><a href="#" class="page-link">2</a></li>
                                     <li class="page-item"><a href="#" class="page-link">3</a></li>

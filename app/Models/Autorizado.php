@@ -5,24 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Parents extends Model
+class Autorizado extends Model
 {
-    protected $table = 'parents';
+    protected $table = 'autorizados';
 
     public $timestamps = true;
 
     protected $fillable = [
         'user_id',
-        'address',
-        'mpio',
-        'ocupation', 
-        'company', 
+        'nombre',
         'foto',
-        'ine',
-        'user_type',
-        'relationship', 
-        'status'
+        'ine'
     ];
-
     use HasFactory;
 }

@@ -19,30 +19,26 @@ class UserSeeder extends Seeder
         ]);*/
 
         $user = new User();
-
         $user->name = 'Admin';
         $user->email = 'admin@gmail.com';
         $user->user_type = 0;
         $user->password = bcrypt('123456');
-
         $user->save();
 
-        $user = new User();
 
+        $user = new User();
         $user->name = 'Papa';
         $user->email = 'papa@gmail.com';
         $user->user_type = 2;
-        $user->password = bcrypt('123456');
-        
-        $user->save();
+        $user->password = bcrypt('123456');       
+        $user->save();        
+
 
         $user = new User();
-
         $user->name = 'Papa2';
         $user->email = 'papa2@gmail.com';
         $user->user_type = 2;
-        $user->password = bcrypt('123456');
-        
+        $user->password = bcrypt('123456');        
         $user->save();
 
 
