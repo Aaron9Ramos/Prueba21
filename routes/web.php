@@ -38,5 +38,3 @@ Route::put('parent/dashboard/autorizado/agregar', [DashboardController::class, '
 Route::put('parent/dashboard/autorizado/{id}/editar', [DashboardController::class, 'editarAutorizado'])->name('autorizado.editar');
 Route::get('parent/dashboard/autorizado/{id}/editar', [DashboardController::class, 'editAutorizado'])->name('autorizado.edit');
 Route::delete('parent/dashboard/autorizado/eliminar/{id}', [DashboardController::class, 'eliminarAutorizado'])->name('autorizado.eliminar');
-// prueba
-Route::get('parent/dashboard/autorizado/elim', [DashboardController::class, 'prueba'])->name('autorizado.eliminar');
