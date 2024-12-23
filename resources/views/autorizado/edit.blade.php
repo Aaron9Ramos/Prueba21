@@ -25,16 +25,28 @@
 
                         <div class="mb-3">
                             <label class="form-label">Name: </label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" value="{{$autorizado->nombre}}">
+                            <input type="text" class="form-control" id="name" name="name" value="{{old('name', $autorizado->nombre)}}">
+                            @error('name')                              
+                              <small><strong style="color: red">{{ $message }}</strong></small>
+                            @enderror
                         </div>  
                         <br>                                                 
                         <div class="mb-3">
                             <label class="form-label">Upload Photo</label>
+                            <small>{{old('foto', $autorizado->foto)}}</small>
                             <input type="file" class="form-control" id="foto" name="foto">
+                            @error('foto')   
+
+                              <small><strong style="color: red">{{ $message }}</strong></small>
+                            @enderror
                         </div>
                         <div class="mb-5">
                             <label  class="form-label">Upload INE</label>
+                            <small>{{old('ine', $autorizado->ine)}}</small>
                             <input type="file" class="form-control" id="ine" name="ine">
+                            @error('ine')                              
+                              <small><strong style="color: red">{{ $message }}</strong></small>
+                            @enderror
                         </div>                             
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Actualizar</button>

@@ -19,7 +19,7 @@
         <div class="container-fluid">
             <div class="card-body">
                 <div class="tab-content p-0">
-                    <form action="{{ route('parent.docs') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('parent.agregar') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                           
@@ -27,10 +27,16 @@
                         <div class="mb-3">
                             <label class="form-label">Upload Photo</label>
                             <input type="file" class="form-control" id="foto" name="foto">
+                            @error('foto')                              
+                              <small><strong style="color: red">{{ $message }}</strong></small>
+                            @enderror
                         </div>
                         <div class="mb-5">
                             <label  class="form-label">Upload INE</label>
                             <input type="file" class="form-control" id="ine" name="ine">
+                            @error('ine')                              
+                              <small><strong style="color: red">{{ $message }}</strong></small>
+                            @enderror
                         </div>                             
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Save</button>

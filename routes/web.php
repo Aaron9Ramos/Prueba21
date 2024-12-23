@@ -29,8 +29,10 @@ Route::get('teacher/dashboard', [DashboardController::class, 'dashboard'])->midd
 Route::get('parent/dashboard', [DashboardController::class, 'dashboard'])->middleware('parent');
 
 // --- Parent rutas INE/Photo --- //
-Route::get('parent/dashboard/documentos', [DashboardController::class, 'agregarDocumentos'])->name('parent.agregar');
-Route::put('parent/dashboard/documentos', [DashboardController::class, 'documentos'])->name('parent.docs');
+Route::get('parent/dashboard/documentos', [DashboardController::class, 'dirAgregarDocs'])->name('parent.dir.agregar');
+Route::put('parent/dashboard/documentos', [DashboardController::class, 'AgregarDocs'])->name('parent.agregar');
+Route::get('parent/dashboard/autorizado/editar', [DashboardController::class, 'dirEditarDocs'])->name('parent.dir.editar');
+Route::put('parent/dashboard/autorizado/editar', [DashboardController::class, 'editarDocs'])->name('parent.editar');
 
 // --- Autorizado rutas --- //
 Route::get('parent/dashboard/autorizar', [DashboardController::class, 'autorizar'])->name('parent.autorizar');
@@ -38,3 +40,7 @@ Route::put('parent/dashboard/autorizado/agregar', [DashboardController::class, '
 Route::put('parent/dashboard/autorizado/{id}/editar', [DashboardController::class, 'editarAutorizado'])->name('autorizado.editar');
 Route::get('parent/dashboard/autorizado/{id}/editar', [DashboardController::class, 'editAutorizado'])->name('autorizado.edit');
 Route::delete('parent/dashboard/autorizado/eliminar/{id}', [DashboardController::class, 'eliminarAutorizado'])->name('autorizado.eliminar');
+
+Route::get('parent/dashboard/pdf', [DashboardController::class, 'crearpdf'])->name('parent.pdf');
+
+

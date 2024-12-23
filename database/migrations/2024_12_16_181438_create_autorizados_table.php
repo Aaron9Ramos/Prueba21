@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('foto')->nullable();
             $table->string('ine')->nullable();
+            $table->string('qr')->nullable();
             $table->timestamps();
         });
     }

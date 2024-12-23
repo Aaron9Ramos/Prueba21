@@ -115,17 +115,22 @@
                                     <ul class="nav nav-pills ml-auto">
                                         <li > 
                                             @if (@empty($parents->id))                                                
-                                            <a href="{{ route('parent.agregar') }}" class="page-link"><i class="fas fa-plus"></i> Agregar Documentos</a>
+                                            <a href="{{ route('parent.dir.agregar') }}" class="page-link"><i class="fas fa-plus"></i> Agregar Documentos</a>
                                             @endif  
                                         </li>         
                                         <li>
                                             @if ($cantAutorizados<2 && (!@empty($parents->id)) )                                            
                                                  <a href="{{ route('parent.autorizar') }}" class="page-link"><i class="fas fa-plus"></i> Autorizado</a>
                                             @endif 
-                                        </li>                                          
+                                        </li>      
+                                        <li>
+                                            @if ( !@empty($parents->id) )                                            
+                                                 <a href="{{ route('parent.pdf') }}" class="page-link"><i class="fas fa-plus"></i> pdf</a>
+                                            @endif 
+                                        </li>                                      
                                     </ul>
                                 {{-- </div> --}}
-                                <!---- contenido QR ------>                                  
+                            <!---- contenido QR ------>                                  
                             </div>
                             <br>
                             <div class="container">
@@ -136,7 +141,7 @@
                                             <div class="card-tools">
                                                 <ul class="nav nav-pills ml-auto">
                                                     <li>
-                                                        <a href="{{ route('parent.docs') }}" class="page-link"><i class="fas fa-plus"></i> Modificar</a>
+                                                        <a href="{{ route('parent.dir.editar') }}" class="page-link"><i class="fas fa-plus"></i> Modificar</a>
                                                     </li>   
                                                     <li>
                                                         <button type="button" class="btn" data-card-widget="collapse">
@@ -147,27 +152,39 @@
                                             </div>
                                         </div>    
                                         <div class="card-body">                          
-                                            <div class="row justify-content-md-left">   
+                                            <div class="row justify-content-md-center align-items-center">   
                                                 {{-- Mostrar info Papa --}}
-                                                <div class="col-sm-3 col-4">
-                                                    @if (@empty($parents->foto))
-                                                        <img src="{{url('public/fotos/Perfil.jpg')}}" 
-                                                            style="width: 10%; min-width: 100px" 
-                                                            class="rounded">
-                                                    @else
-                                                    <img src="{{url('public/'.$parents->foto)}}" 
-                                                    style="width: 10%; min-width: 100px" class="rounded">
-                                                    @endif
+                                                <div class="col-4 col-sm-3"> 
+                                                    {{-- align-self-center --}}
+                                                        @if (@empty($parents->foto))
+                                                            <img src="{{url('public/fotos/Perfil.jpg')}}" 
+                                                                style="width: 10%; min-width: 100px" 
+                                                                class="rounded mx-auto d-block">
+                                                        @else
+                                                        <img src="{{url('public/'.$parents->foto)}}" 
+                                                        style="width: 10%; min-width: 100px" class="rounded mx-auto d-block">
+                                                        @endif
                                                 </div>                                        
 
-                                                <div class="col-sm-3 col-4">
+                                                <div class="col-4 col-sm-3">
                                                     @if (@empty($parents->ine))
                                                         <img src="{{url('public/ines/INE.png')}}" 
                                                             style="width: 30%; min-width: 120px" 
-                                                            class="rounded">
+                                                            class="rounded mx-auto d-block">
                                                     @else
                                                     <img src="{{url('public/'.$parents->ine)}}" 
-                                                    style="width: 30%; min-width: 120px" class="rounded">
+                                                    style="width: 30%; min-width: 120px" class="rounded mx-auto d-block">
+                                                    @endif   
+                                                </div>
+
+                                                <div class="col-sm-3 col-4">
+                                                    @if (@empty($parents->qr))
+                                                    <img src="{{url('public/qrcode/qr.png')}}" 
+                                                    style="width: 20%; min-width: 800px" 
+                                                    class="rounded">
+                                                    @else
+                                                    <img src="{{url('public/'.$parents->qr)}}" 
+                                                    style="width: 20%; min-width: 80px" class="rounded mx-auto d-block">
                                                     @endif   
                                                 </div>
                                             </div>
@@ -201,26 +218,37 @@
                                                 </div> 
                                         </div>   
                                         <div class="card-body">
-                                            <div class="row justify-content-md-left">  
-                                                <div class="col-sm-3 col-4">
+                                            <div class="row justify-content-md-center align-items-center">  
+                                                <div class="col-sm-3 col-4 ">
                                                     @if (@empty($autorizado->foto))
                                                     <img src="{{url('public/fotos/Perfil.jpg')}}" 
                                                     style="width: 10%; min-width: 100px" 
                                                     class="rounded">
                                                     @else
                                                     <img src="{{url('public/'.$autorizado->foto)}}" 
-                                                    style="width: 10%; min-width: 100px" class="rounded">
+                                                    style="width: 10%; min-width: 100px" class="rounded mx-auto d-block">
                                                     @endif
                                                 </div>                                        
                                                 
-                                                <div class="col-sm-3 col-4">
+                                                <div class="col-sm-3 col-4 ">
                                                     @if (@empty($autorizado->ine))
                                                     <img src="{{url('public/ines/INE.png')}}" 
                                                     style="width: 30%; min-width: 120px" 
                                                     class="rounded">
                                                     @else
                                                     <img src="{{url('public/'.$autorizado->ine)}}" 
-                                                    style="width: 30%; min-width: 120px" class="rounded">
+                                                    style="width: 30%; min-width: 120px" class="rounded mx-auto d-block">
+                                                    @endif   
+                                                </div>
+
+                                                <div class="col-sm-3 col-4">
+                                                    @if (@empty($autorizado->qr))
+                                                    <img src="{{url('public/qrcode/qr.png')}}" 
+                                                    style="width: 20%; min-width: 800px" 
+                                                    class="rounded">
+                                                    @else
+                                                    <img src="{{url('public/'.$autorizado->qr)}}" 
+                                                    style="width: 20%; min-width: 80px" class="rounded mx-auto d-block">
                                                     @endif   
                                                 </div>
                                             </div>

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Students;
 use App\Models\User;
 use App\Models\Autorizado;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 use Illuminate\Http\Request;
 use PHPUnit\Framework\MockObject\Builder\Stub;
@@ -31,45 +32,73 @@ class DashboardController extends Controller
         }
     }
 
-    public function agregarDocumentos(){
+    public function dirAgregarDocs(){
         return view('parent.documentos');
     }
     
-    public function documentos(Request $request){
+    public function AgregarDocs(Request $request){
         
         $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'ine' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'foto' => 'required|max:10240|image|mimes:jpeg,png,jpg',
+            'ine' => 'required|max:10240|image|mimes:jpeg,png,jpg',
+        ]);        
+        
+        $user_id = Auth::user()->id;
+        $parent = Parents::where('user_id', $user_id )->first();        
+         
+        $parent = new Parents();
+        $parent->user_id = Auth::user()->id;
+        $parent->user_type = Auth::user()->user_type;
+        //foto
+        $photoName = time().'.'.$request->foto->extension();
+        $request->foto->move(public_path('fotos'), $photoName);
+        $parent->foto = 'fotos/'.$photoName;
+        //ine
+        $ineName = time().'.'.$request->ine->extension();
+        $request->ine->move(public_path('ines'), $ineName);
+        $parent->ine = 'ines/'.$ineName;
+        //qr
+        $path = public_path('qrcode/qr'.time().'.svg');
+        QrCode::format('svg')->size(80)->errorCorrection('L')->margin(1)->generate(public_path('pdf/archivo.pdf'), $path);
+        $parent->qr = 'qrcode/qr'.time().'.svg';
+        //guardar
+        $parent->save();     
+
+        // $path = public_path('qrcode/'.time().'.png');
+        // QrCode::format('png')->size(200)->errorCorrection('H')->generate('string', $path);
+        
+        return redirect('parent/dashboard');    
+    }
+
+    public function dirEditarDocs(){
+        return view('parent.edit');
+    }
+    
+    public function editarDocs(Request $request){
+        
+        $request->validate([
+            'foto' => 'max:10240|image|mimes:jpeg,png,jpg',
+            'ine' => 'max:10240|image|mimes:jpeg,png,jpg',
         ]);        
         
         $user_id = Auth::user()->id;
         $parent = Parents::where('user_id', $user_id )->first();
+        //foto
+        if(!$request->foto == null){
+            $photoName = time().'.'.$request->foto->extension();
+            $request->foto->move(public_path('fotos'), $photoName);
+            $parent->foto = 'fotos/'.$photoName;
+        }
+        //ine
+        if(!$request->ine == null){
+            $ineName = time().'.'.$request->ine->extension();
+            $request->ine->move(public_path('ines'), $ineName);
+            $parent->ine = 'ines/'.$ineName;
+        }
+        $parent->save();       
         
-        if($parent == null){
-            $parent = new Parents();
-            $parent->user_id = Auth::user()->id;
-            $parent->user_type = Auth::user()->user_type;
-            //foto
-            $photoName = time().'.'.$request->foto->extension();
-            $request->foto->move(public_path('fotos'), $photoName);
-            $parent->foto = 'fotos/'.$photoName;
-            //ine
-            $ineName = time().'.'.$request->ine->extension();
-            $request->ine->move(public_path('ines'), $ineName);
-            $parent->ine = 'ines/'.$ineName;
-            //guardar
-            $parent->save();
-        }else{
-            $photoName = time().'.'.$request->foto->extension();
-            $request->foto->move(public_path('fotos'), $photoName);
-            $parent->foto = 'fotos/'.$photoName;
-            
-            $ineName = time().'.'.$request->ine->extension();
-            $request->ine->move(public_path('ines'), $ineName);
-            $parent->ine = 'ines/'.$ineName;
-            
-            $parent->save();       
-        }        
+        // $path = public_path('qrcode/'.time().'.png');
+        // QrCode::format('png')->size(200)->errorCorrection('H')->generate('string', $path);
         
         return redirect('parent/dashboard');    
     }
@@ -81,51 +110,61 @@ class DashboardController extends Controller
     public function nuevoAutorizado(Request $request){
        
         $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'ine' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'name' => 'required|min:5|max:255',
+            'foto' => 'required|max:10240|image|mimes:jpeg,png,jpg',
+            'ine' => 'required|max:10240|image|mimes:jpeg,png,jpg',
         ]);              
         
-            $auto = new Autorizado();
-            $auto->user_id = Auth::user()->id;
-            $auto->nombre = $request->nombre;
-            //foto
-            $photoName = time().'.'.$request->foto->extension();
-            $request->foto->move(public_path('fotos'), $photoName);
-            $auto->foto = 'fotos/'.$photoName;
-            //ine
-            $ineName = time().'.'.$request->ine->extension();
-            $request->ine->move(public_path('ines'), $ineName);
-            $auto->ine = 'ines/'.$ineName;
-            //guardar
-            $auto->save(); 
-        
+        $auto = new Autorizado();
+        $auto->user_id = Auth::user()->id;
+        $auto->nombre = $request->name;
+        //foto
+        $photoName = time().'.'.$request->foto->extension();
+        $request->foto->move(public_path('fotos'), $photoName);
+        $auto->foto = 'fotos/'.$photoName;
+        //ine
+        $ineName = time().'.'.$request->ine->extension();
+        $request->ine->move(public_path('ines'), $ineName);
+        $auto->ine = 'ines/'.$ineName;
+        //qr
+        $path = public_path('qrcode/qr'.time().'.svg');
+        QrCode::format('svg')->size(80)->errorCorrection('L')->margin(1)->generate(public_path('pdf/archivo.pdf'), $path);
+        $auto->qr = 'qrcode/qr'.time().'.svg';
+        //guardar
+        $auto->save(); 
 
         return redirect('parent/dashboard');        
     }
     
     public function editautorizado($id){
-        // $autorizado = Autorizado::where('id', $id)->get();
+
         $autorizado = Autorizado::find($id);
+
         return view('autorizado.edit', compact('autorizado'));
     }
     
     public function editarAutorizado(Request $request, $id){
        
         $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif',
-            'ine' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'name' => 'required|min:5|max:255',
+            'foto' => 'max:10240|image|mimes:jpeg,png,jpg',
+            'ine' => 'max:10240|image|mimes:jpeg,png,jpg',
         ]);              
         
             $auto = Autorizado::find($id);
-            $auto->nombre = $request->nombre;
+            $auto->nombre = $request->name;
             //foto
+            if(!$request->foto == null){
             $photoName = time().'.'.$request->foto->extension();
             $request->foto->move(public_path('fotos'), $photoName);
             $auto->foto = 'fotos/'.$photoName;
+            }
             //ine
-            $ineName = time().'.'.$request->ine->extension();
-            $request->ine->move(public_path('ines'), $ineName);
-            $auto->ine = 'ines/'.$ineName;
+            if(!$request->ine == null){
+                $ineName = time().'.'.$request->ine->extension();
+                $request->ine->move(public_path('ines'), $ineName);
+                $auto->ine = 'ines/'.$ineName;
+            }
             //guardar
             $auto->save(); 
         
@@ -139,5 +178,26 @@ class DashboardController extends Controller
         $auto->delete();
 
         return redirect('parent/dashboard'); 
+    }
+
+
+    public function crearpdf(){
+
+        $user_id = Auth::user()->id;
+        $parents = Parents::where('user_id', $user_id )->first();
+        $autorizados = Autorizado::where('user_id', $user_id)->get();
+        $estudiantes = Students::where('user_id', $user_id)->get();
+
+        $data = [
+            'name' => Auth::user()->name,
+            'foto' => public_path($parents->foto),
+            'ine' => public_path($parents->ine),
+            'autorizados' => $autorizados,
+            'estudiantes' => $estudiantes,
+        ];
+        
+        $pdf = \PDF::loadView('parent.pdf', $data )->save(public_path('pdf/'.$user_id.'.pdf'));  
+        
+        return $pdf->stream('info.pdf');
     }
 }

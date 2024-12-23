@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Nuevo Autorizado</h1>
+                        <h1 class="m-0">Documentos {{Auth::user()->name}}</h1>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -19,16 +19,10 @@
         <div class="container-fluid">
             <div class="card-body">
                 <div class="tab-content p-0">
-                    <form action="{{ route('autorizado.agregar') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('parent.editar') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="mb-3 form-group">
-                            <label class="form-label">Name: </label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
-                            @error('name')                              
-                              <small><strong style="color: red">{{ $message }}</strong></small>
-                            @enderror
-                        </div>  
+                          
                         <br>                                                 
                         <div class="mb-3">
                             <label class="form-label">Upload Photo</label>
@@ -45,7 +39,7 @@
                             @enderror
                         </div>                             
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
                         </div>
                     </form>
                 </div>
