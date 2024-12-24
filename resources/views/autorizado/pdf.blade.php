@@ -34,7 +34,55 @@
   </head>
   <body>
       <div class="container">                          
-        <div class="row justify-content-md-center">   
+        <div class="row justify-content-md-center">
+
+            {{-- tabla Autorizados--}}           
+            <h1 style="text-align: center">Autorizado</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Foto</th>
+                        <th>INE</th>
+                    </tr>
+                </thead>
+                <tbody>                
+                    @foreach ($autorizados as $autorizado)
+                        <tr>                      
+                            <td>{{$autorizado->nombre}}</td>                 
+                            <td><img src="{{public_path($autorizado->foto)}}" style="width: 30%; min-width: 120px"></td>
+                            <td><img src="{{public_path($autorizado->ine)}}" style="width: 30%; min-width: 120px"></td>  
+                        </tr>                        
+                    @endforeach    
+                </tbody>
+            </table>    
+            
+            {{-- tabla Estudiantes--}}
+            <h1 style="text-align: center">Estudiantes</h1>
+            <table>
+                <thead>
+                    <tr>
+                  <th>Nombre</th>
+                  <th>Primer Apellido</th>
+                  <th>Segundo Apellido</th>
+                  <th>Grado</th>
+                  <th>Nivel</th>                  
+                </tr>
+              </thead>
+              <tbody>
+                  @foreach ($estudiantes as $estudiante)
+                <tr>                      
+                  <td>{{$estudiante->name}}</td>                 
+                  <td>{{$estudiante->last_name}}</td>                 
+                  <td>{{$estudiante->last_name2}}</td>                 
+                  <td>{{$estudiante->grade}}</td>                 
+                  <td>{{$estudiante->level}}</td>    
+                </tr>
+                @endforeach
+            </tbody>
+            </table> 
+            
+
             {{-- Mostrar info Papa --}}
             <h1 style="text-align: center">Papa</h1>
             <table>
@@ -53,54 +101,6 @@
                 </tr>
               </tbody>
             </table>         
-
-            {{-- tabla Estudiantes--}}
-            <h1 style="text-align: center">Estudiantes</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Primer Apellido</th>
-                  <th>Segundo Apellido</th>
-                  <th>Grado</th>
-                  <th>Nivel</th>                  
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($estudiantes as $estudiante)
-                <tr>                      
-                  <td>{{$estudiante->name}}</td>                 
-                  <td>{{$estudiante->last_name}}</td>                 
-                  <td>{{$estudiante->last_name2}}</td>                 
-                  <td>{{$estudiante->grade}}</td>                 
-                  <td>{{$estudiante->level}}</td>    
-                </tr>
-                @endforeach
-              </tbody>
-            </table> 
-
-            {{-- tabla Autorizados--}}
-            @if (!@empty($autorizados[0]->id))
-            <h1 style="text-align: center">Autorizados</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Foto</th>
-                  <th>INE</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($autorizados as $autorizado)
-                <tr>                      
-                  <td>{{$autorizado->nombre}}</td>                 
-                  <td><img src="{{public_path($autorizado->foto)}}" style="width: 30%; min-width: 120px"></td>
-                  <td><img src="{{public_path($autorizado->ine)}}" style="width: 30%; min-width: 120px"></td>  
-                </tr>
-                @endforeach
-              </tbody>
-            </table>    
-            @endif
         </div>
     </div>
 

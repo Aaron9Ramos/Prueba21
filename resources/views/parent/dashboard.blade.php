@@ -164,7 +164,7 @@
                                                         <img src="{{url('public/'.$parents->foto)}}" 
                                                         style="width: 10%; min-width: 100px" class="rounded mx-auto d-block">
                                                         @endif
-                                                </div>                                        
+                                                </div>                                       
 
                                                 <div class="col-4 col-sm-3">
                                                     @if (@empty($parents->ine))
@@ -179,12 +179,13 @@
 
                                                 <div class="col-sm-3 col-4">
                                                     @if (@empty($parents->qr))
-                                                    <img src="{{url('public/qrcode/qr.png')}}" 
-                                                    style="width: 20%; min-width: 800px" 
-                                                    class="rounded">
+                                                        <img src="{{url('public/qrcode/qr.png')}}" 
+                                                        style="width: 20%; min-width: 80px" 
+                                                        class="rounded">
                                                     @else
-                                                    <img src="{{url('public/'.$parents->qr)}}" 
-                                                    style="width: 20%; min-width: 80px" class="rounded mx-auto d-block">
+                                                        <img src="{{url('public/'.$parents->qr)}}" 
+                                                        style="width: 20%; min-width: 80px" 
+                                                        class="rounded mx-auto d-block">
                                                     @endif   
                                                 </div>
                                             </div>
@@ -244,7 +245,7 @@
                                                 <div class="col-sm-3 col-4">
                                                     @if (@empty($autorizado->qr))
                                                     <img src="{{url('public/qrcode/qr.png')}}" 
-                                                    style="width: 20%; min-width: 800px" 
+                                                    style="width: 20%; min-width: 80px" 
                                                     class="rounded">
                                                     @else
                                                     <img src="{{url('public/'.$autorizado->qr)}}" 

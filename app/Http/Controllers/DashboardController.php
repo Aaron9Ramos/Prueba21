@@ -43,9 +43,7 @@ class DashboardController extends Controller
             'ine' => 'required|max:10240|image|mimes:jpeg,png,jpg',
         ]);        
         
-        $user_id = Auth::user()->id;
-        $parent = Parents::where('user_id', $user_id )->first();        
-         
+        $user_id = Auth::user()->id; 
         $parent = new Parents();
         $parent->user_id = Auth::user()->id;
         $parent->user_type = Auth::user()->user_type;
@@ -57,17 +55,38 @@ class DashboardController extends Controller
         $ineName = time().'.'.$request->ine->extension();
         $request->ine->move(public_path('ines'), $ineName);
         $parent->ine = 'ines/'.$ineName;
-        //qr
-        $path = public_path('qrcode/qr'.time().'.svg');
-        QrCode::format('svg')->size(80)->errorCorrection('L')->margin(1)->generate(public_path('pdf/archivo.pdf'), $path);
-        $parent->qr = 'qrcode/qr'.time().'.svg';
         //guardar
         $parent->save();     
 
-        // $path = public_path('qrcode/'.time().'.png');
-        // QrCode::format('png')->size(200)->errorCorrection('H')->generate('string', $path);
+        $this->generarPdfPadre();
         
         return redirect('parent/dashboard');    
+    }
+
+    public function generarPdfPadre(){
+        //pdf        
+        $user_id = Auth::user()->id; 
+        $parents = Parents::where('user_id', $user_id )->first();
+        $autorizados = Autorizado::where('user_id', $user_id)->get();
+        $estudiantes = Students::where('user_id', $user_id)->get();
+        $data = [
+            'name' => Auth::user()->name,
+            'foto' => public_path($parents->foto),
+            'ine' => public_path($parents->ine),
+            'autorizados' => $autorizados,
+            'estudiantes' => $estudiantes,
+        ];
+        
+        //generar_pdf
+        $pdfPath = public_path('pdf/'.$user_id.time().'.pdf');
+        \PDF::loadView('parent.pdf', $data )->save($pdfPath); 
+        $parents->pdf = 'pdf/'.$user_id.time().'.pdf';
+        //qr       
+        $qrPath = public_path('qrcode/qr'.time().'.svg');
+        QrCode::format('svg')->size(80)->errorCorrection('L')->margin(1)->generate($pdfPath, $qrPath);
+        $parents->qr = 'qrcode/qr'.time().'.svg'; 
+        //guardar
+        $parents->save();
     }
 
     public function dirEditarDocs(){
@@ -97,8 +116,7 @@ class DashboardController extends Controller
         }
         $parent->save();       
         
-        // $path = public_path('qrcode/'.time().'.png');
-        // QrCode::format('png')->size(200)->errorCorrection('H')->generate('string', $path);
+        $this->generarPdfPadre();
         
         return redirect('parent/dashboard');    
     }
@@ -125,15 +143,48 @@ class DashboardController extends Controller
         //ine
         $ineName = time().'.'.$request->ine->extension();
         $request->ine->move(public_path('ines'), $ineName);
-        $auto->ine = 'ines/'.$ineName;
-        //qr
-        $path = public_path('qrcode/qr'.time().'.svg');
-        QrCode::format('svg')->size(80)->errorCorrection('L')->margin(1)->generate(public_path('pdf/archivo.pdf'), $path);
-        $auto->qr = 'qrcode/qr'.time().'.svg';
+        $auto->ine = 'ines/'.$ineName;        
         //guardar
         $auto->save(); 
 
+        $this->generarPdfAutorizado($auto);
+
         return redirect('parent/dashboard');        
+    }
+
+    public function generarPdfAutorizado($auto){
+        //pdf
+        $user_id = Auth::user()->id;        
+        $parents = Parents::where('user_id', $user_id )->first();
+        $estudiantes = Students::where('user_id', $user_id)->get();
+        $cantAutorizados = Autorizado::where('user_id', $user_id)->count();
+        
+        if($cantAutorizados == 1){
+            $autorizados = Autorizado::where('user_id', $user_id)->take(1)->get();
+        }
+        elseif($cantAutorizados == 2){
+            $autorizados = Autorizado::where('user_id', $user_id)->skip(1)->take(1)->get();
+        }
+       
+         $data = [
+            'name' => Auth::user()->name,
+            'foto' => public_path($parents->foto),
+            'ine' => public_path($parents->ine),
+            'autorizados' => $autorizados,
+            'estudiantes' => $estudiantes,
+        ];
+        
+        //pdf
+        $pdfPath = public_path('pdf/'.$user_id.'.pdf');
+        \PDF::loadView('autorizado.pdf', $data )->save($pdfPath); 
+        $auto->pdf = 'pdf/'.$user_id.'.pdf';
+        //qr       
+        $qrPath = public_path('qrcode/qr'.time().'.svg');
+        QrCode::format('svg')->size(80)->errorCorrection('L')->margin(1)->generate($pdfPath, $qrPath);
+        $auto->qr = 'qrcode/qr'.time().'.svg'; 
+        //guardar
+        $auto->save();
+        
     }
     
     public function editautorizado($id){
@@ -168,6 +219,7 @@ class DashboardController extends Controller
             //guardar
             $auto->save(); 
         
+            $this->generarPdfAutorizado($auto);
 
         return redirect('parent/dashboard');        
     }

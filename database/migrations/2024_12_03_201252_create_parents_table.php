@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('foto')->nullable();
             $table->string('ine')->nullable();
             $table->string('qr')->nullable();
+            $table->string('pdf')->nullable();
             $table->boolean('status')->comment(' 0: Inactive, 1: Active ')->default(true);
             $table->foreignId('user_type')->constrained(table: 'users', indexName: 'user_type')->nullable();         
             $table->timestamps();
