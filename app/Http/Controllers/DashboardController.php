@@ -252,4 +252,10 @@ class DashboardController extends Controller
         
         return $pdf->stream('info.pdf');
     }
+
+    public function descargarQr($file){
+        $pathtoFile = public_path().$file;
+        $filename = 'S3 FILE';
+        return response()->download($pathtoFile, $filename);
+    }
 }

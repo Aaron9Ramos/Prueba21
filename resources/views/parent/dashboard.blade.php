@@ -115,17 +115,17 @@
                                     <ul class="nav nav-pills ml-auto">
                                         <li > 
                                             @if (@empty($parents->id))                                                
-                                            <a href="{{ route('parent.dir.agregar') }}" class="page-link"><i class="fas fa-plus"></i> Agregar Documentos</a>
+                                            <a href="{{ route('parent.dir.agregar') }}" class="page-link"><i class="fas fa-upload"></i> <i class="fas fa-image"></i> docs</a>
                                             @endif  
                                         </li>         
                                         <li>
                                             @if ($cantAutorizados<2 && (!@empty($parents->id)) )                                            
-                                                 <a href="{{ route('parent.autorizar') }}" class="page-link"><i class="fas fa-plus"></i> Autorizado</a>
+                                                 <a href="{{ route('parent.autorizar') }}" class="page-link"><i class="fas fa-user-plus"></i></a>
                                             @endif 
                                         </li>      
                                         <li>
                                             @if ( !@empty($parents->id) )                                            
-                                                 <a href="{{ route('parent.pdf') }}" class="page-link"><i class="fas fa-plus"></i> pdf</a>
+                                                 <a href="{{ route('parent.pdf') }}" class="page-link"><i class="fas fa-file"></i> pdf</a>
                                             @endif 
                                         </li>                                      
                                     </ul>
@@ -141,7 +141,10 @@
                                             <div class="card-tools">
                                                 <ul class="nav nav-pills ml-auto">
                                                     <li>
-                                                        <a href="{{ route('parent.dir.editar') }}" class="page-link"><i class="fas fa-plus"></i> Modificar</a>
+                                                        <a href="{{ route('parent.dir.editar') }}" class="page-link"><i  class="fas fa-pen"></i></a>
+                                                    </li>   
+                                                    <li>
+                                                        <a href="{{ route('descargar.qr', $parents->qr) }}" class="page-link"><i class="fas fa-qrcode"></i> <i class="fas fa-download"></i></a>
                                                     </li>   
                                                     <li>
                                                         <button type="button" class="btn" data-card-widget="collapse">
@@ -200,14 +203,17 @@
                                             <h3 class="card-title">{{$autorizado->nombre}}</h3>
                                                 <div class="card-tools">  
                                                     <ul class="nav nav-pills ml-auto">
-                                                        <li >
-                                                            <a href="{{ route('autorizado.edit', $autorizado->id ) }}" class="page-link"><i class="fas fa-plus"></i> Modificar</a>
+                                                        <li>
+                                                            <a href="{{ route('descargar.qr', $autorizado->qr) }}" class="page-link"><i class="fas fa-qrcode"></i> <i class="fas fa-download"></i></a>
                                                         </li> 
-                                                        <li class="pl-2">
+                                                        <li>
+                                                            <a href="{{ route('autorizado.edit', $autorizado->id ) }}" class="page-link"><i class="fas fa-pen"></i></a>
+                                                        </li> 
+                                                        <li>
                                                             <form action="{{ route('autorizado.eliminar', $autorizado->id ) }}" method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Eliminar</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fas fa-trash"></i></button>
                                                             </form> 
                                                         </li>                                                          
                                                         <li>
@@ -221,6 +227,7 @@
                                         <div class="card-body">
                                             <div class="row justify-content-md-center align-items-center">  
                                                 <div class="col-sm-3 col-4 ">
+                                                {{-- foto --}}
                                                     @if (@empty($autorizado->foto))
                                                     <img src="{{url('public/fotos/Perfil.jpg')}}" 
                                                     style="width: 10%; min-width: 100px" 
@@ -230,7 +237,7 @@
                                                     style="width: 10%; min-width: 100px" class="rounded mx-auto d-block">
                                                     @endif
                                                 </div>                                        
-                                                
+                                                {{-- ine --}}
                                                 <div class="col-sm-3 col-4 ">
                                                     @if (@empty($autorizado->ine))
                                                     <img src="{{url('public/ines/INE.png')}}" 
@@ -241,7 +248,7 @@
                                                     style="width: 30%; min-width: 120px" class="rounded mx-auto d-block">
                                                     @endif   
                                                 </div>
-
+                                                {{-- qr --}}
                                                 <div class="col-sm-3 col-4">
                                                     @if (@empty($autorizado->qr))
                                                     <img src="{{url('public/qrcode/qr.png')}}" 

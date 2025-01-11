@@ -43,4 +43,7 @@ Route::delete('parent/dashboard/autorizado/eliminar/{id}', [DashboardController:
 
 Route::get('parent/dashboard/pdf', [DashboardController::class, 'crearpdf'])->name('parent.pdf');
 
+// --- Descargar QR --- //
+Route::get('download/{file}', [DashboardController::class, 'descargarQr'])->name('descargar.qr');
+
 
