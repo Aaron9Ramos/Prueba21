@@ -252,6 +252,25 @@ class DashboardController extends Controller
         
         return $pdf->stream('info.pdf');
     }
+    public function crearpdfauto(){
+
+        $user_id = Auth::user()->id;
+        $parents = Parents::where('user_id', $user_id )->first();
+        $autorizados = Autorizado::where('user_id', $user_id)->get();
+        $estudiantes = Students::where('user_id', $user_id)->get();
+
+        $data = [
+            'name' => Auth::user()->name,
+            'foto' => public_path($parents->foto),
+            'ine' => public_path($parents->ine),
+            'autorizados' => $autorizados,
+            'estudiantes' => $estudiantes,
+        ];
+        
+        $pdf = \PDF::loadView('autorizado.pdf', $data )->save(public_path('pdf/'.$parents->id.'.pdf'));  
+        
+        return $pdf->stream('info.pdf');
+    }
 
     public function descargarQr($file){
         $pathtoFile = public_path().$file;

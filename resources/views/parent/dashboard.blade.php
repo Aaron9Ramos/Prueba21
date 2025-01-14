@@ -101,6 +101,16 @@
                             </h3>
                             <div class="card-tools">
                                 <ul class="nav nav-pills ml-auto">
+                                    <li > 
+                                        @if (@empty($parents->id))                                                
+                                        <a href="{{ route('parent.dir.agregar') }}" class="page-link"><i class="fas fa-upload"></i> docs</a>
+                                        @endif  
+                                    </li>         
+                                    <li>
+                                        @if ($cantAutorizados<2 && (!@empty($parents->id)) )                                            
+                                             <a href="{{ route('parent.autorizar') }}" class="page-link"><i class="fas fa-user-plus"></i> Autorizado</a>
+                                        @endif 
+                                    </li>      
                                     <li>
                                         <button type="button" class="btn" data-card-widget="collapse">
                                             <i class="fas fa-minus"></i>
@@ -110,28 +120,7 @@
                             </div>
                         </div><!-- /.card-header -->
                         <div class="card-body">
-                            <div class="pl-5">
-                                {{-- <div class="justify-content-center"> --}}
-                                    <ul class="nav nav-pills ml-auto">
-                                        <li > 
-                                            @if (@empty($parents->id))                                                
-                                            <a href="{{ route('parent.dir.agregar') }}" class="page-link"><i class="fas fa-upload"></i> <i class="fas fa-image"></i> docs</a>
-                                            @endif  
-                                        </li>         
-                                        <li>
-                                            @if ($cantAutorizados<2 && (!@empty($parents->id)) )                                            
-                                                 <a href="{{ route('parent.autorizar') }}" class="page-link"><i class="fas fa-user-plus"></i></a>
-                                            @endif 
-                                        </li>      
-                                        <li>
-                                            @if ( !@empty($parents->id) )                                            
-                                                 <a href="{{ route('parent.pdf') }}" class="page-link"><i class="fas fa-file"></i> pdf</a>
-                                            @endif 
-                                        </li>                                      
-                                    </ul>
-                                {{-- </div> --}}
-                            <!---- contenido QR ------>                                  
-                            </div>
+                            <!---- contenido QR ------>     
                             <br>
                             <div class="container">
                                 @if (!@empty($parents->id))
@@ -140,6 +129,11 @@
                                             <h3 class="card-title">{{Auth::user()->name}}</h3>
                                             <div class="card-tools">
                                                 <ul class="nav nav-pills ml-auto">
+                                                    <li>
+                                                        @if ( !@empty($parents->id) )                                            
+                                                             <a href="{{ route('parent.pdf') }}" class="page-link"><i class="fas fa-file"></i> PDF</a>
+                                                        @endif 
+                                                    </li>
                                                     <li>
                                                         <a href="{{ route('parent.dir.editar') }}" class="page-link"><i  class="fas fa-pen"></i></a>
                                                     </li>   
@@ -204,10 +198,15 @@
                                                 <div class="card-tools">  
                                                     <ul class="nav nav-pills ml-auto">
                                                         <li>
-                                                            <a href="{{ route('descargar.qr', $autorizado->qr) }}" class="page-link"><i class="fas fa-qrcode"></i> <i class="fas fa-download"></i></a>
-                                                        </li> 
+                                                            @if ( !@empty($parents->id) )                                            
+                                                                 <a href="{{ route('autorizado.pdf') }}" class="page-link"><i class="fas fa-file"></i> PDF</a>
+                                                            @endif 
+                                                        </li>
                                                         <li>
                                                             <a href="{{ route('autorizado.edit', $autorizado->id ) }}" class="page-link"><i class="fas fa-pen"></i></a>
+                                                        </li> 
+                                                        <li>
+                                                            <a href="{{ route('descargar.qr', $autorizado->qr) }}" class="page-link"><i class="fas fa-qrcode"></i> <i class="fas fa-download"></i></a>
                                                         </li> 
                                                         <li>
                                                             <form action="{{ route('autorizado.eliminar', $autorizado->id ) }}" method="POST">

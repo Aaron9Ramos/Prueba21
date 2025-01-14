@@ -42,6 +42,7 @@ Route::get('parent/dashboard/autorizado/{id}/editar', [DashboardController::clas
 Route::delete('parent/dashboard/autorizado/eliminar/{id}', [DashboardController::class, 'eliminarAutorizado'])->name('autorizado.eliminar');
 
 Route::get('parent/dashboard/pdf', [DashboardController::class, 'crearpdf'])->name('parent.pdf');
+Route::get('parent/dashboard/pdf/auto', [DashboardController::class, 'crearpdfauto'])->name('autorizado.pdf');
 
 // --- Descargar QR --- //
 Route::get('download/{file}', [DashboardController::class, 'descargarQr'])->name('descargar.qr');

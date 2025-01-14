@@ -78,7 +78,7 @@
                   <td>{{$estudiante->grade}}</td>                 
                   <td>{{$estudiante->level}}</td>    
                 </tr>
-                @endforeach
+                  @endforeach
             </tbody>
             </table> 
             
