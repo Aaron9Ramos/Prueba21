@@ -273,8 +273,7 @@ class DashboardController extends Controller
     }
 
     public function descargarQr($file){
-        $pathtoFile = public_path().$file;
-        $filename = 'S3 FILE';
-        return response()->download($pathtoFile, $filename);
+        $pathtoFile = storage_path().$file;
+        return response()->download($pathtoFile);
     }
 }
