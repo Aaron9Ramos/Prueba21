@@ -130,15 +130,13 @@
                                             <div class="card-tools">
                                                 <ul class="nav nav-pills ml-auto">
                                                     <li>
-                                                        @if ( !@empty($parents->id) )                                            
-                                                             <a href="{{ route('parent.pdf') }}" class="page-link"><i class="fas fa-file"></i> PDF</a>
-                                                        @endif 
+                                                        <a href="{{ route('mostrar.qr.parent') }}" class="page-link"> <i class="fas fa-eye"> <i class="fas fa-qrcode"></i></i></a>
                                                     </li>
                                                     <li>
                                                         <a href="{{ route('parent.dir.editar') }}" class="page-link"><i  class="fas fa-pen"></i></a>
                                                     </li>   
                                                     <li>
-                                                        <a href="{{ route('descargar.qr', $parents->qr) }}" class="page-link"><i class="fas fa-qrcode"></i> <i class="fas fa-download"></i></a>
+                                                        <a href="{{ route('descargar.qr.parent') }}" class="page-link"> <i class="fas fa-download"></i> <i class="fas fa-qrcode"></i></a>
                                                     </li>   
                                                     <li>
                                                         <button type="button" class="btn" data-card-widget="collapse">
@@ -180,7 +178,7 @@
                                                         style="width: 20%; min-width: 80px" 
                                                         class="rounded">
                                                     @else
-                                                        <img src="{{url('public/'.$parents->qr)}}" 
+                                                        <img src="{{url('public/qrcode/'.$parents->qr)}}" 
                                                         style="width: 20%; min-width: 80px" 
                                                         class="rounded mx-auto d-block">
                                                     @endif   
@@ -198,15 +196,15 @@
                                                 <div class="card-tools">  
                                                     <ul class="nav nav-pills ml-auto">
                                                         <li>
-                                                            @if ( !@empty($parents->id) )                                            
+                                                            {{-- @if ( !@empty($parents->id) )                                            
                                                                  <a href="{{ route('autorizado.pdf') }}" class="page-link"><i class="fas fa-file"></i> PDF</a>
-                                                            @endif 
+                                                            @endif  --}}
                                                         </li>
                                                         <li>
                                                             <a href="{{ route('autorizado.edit', $autorizado->id ) }}" class="page-link"><i class="fas fa-pen"></i></a>
                                                         </li> 
                                                         <li>
-                                                            <a href="{{ route('descargar.qr', $autorizado->qr) }}" class="page-link"><i class="fas fa-qrcode"></i> <i class="fas fa-download"></i></a>
+                                                            <a href="{{ route('descargar.qr.autorizado', $autorizado->id ) }}" class="page-link"><i class="fas fa-download"></i> <i class="fas fa-qrcode"></i></a>
                                                         </li> 
                                                         <li>
                                                             <form action="{{ route('autorizado.eliminar', $autorizado->id ) }}" method="POST">
