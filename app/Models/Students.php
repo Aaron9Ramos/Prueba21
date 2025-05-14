@@ -9,7 +9,7 @@ class Students extends Model
 {
     protected $table = 'students';
 
-      public $timestamps = true;
+    public $timestamps = true;
 
     protected $fillable = [
         'name', 

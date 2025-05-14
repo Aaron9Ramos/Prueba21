@@ -38,7 +38,7 @@ class DashboardController extends Controller
         $students = Students::where('user_id', $id)->get();         
         $name = Auth::user()->name;
         
-        return view('parent.info', compact('parent','autorizados', 'students', 'cantAutorizados', 'cantStudents', 'name'));
+        return view('parent.info', compact('parent','autorizados', 'students', 'name'));
     }
 
     public function abrirInfoAutorizado($id){
@@ -86,10 +86,10 @@ class DashboardController extends Controller
         //pdf        
         $user_id = Auth::user()->id;
         $parents = Parents::where('user_id', $user_id )->first();        
-        $id=Auth::user()->id;
+        
 
         $qrPath = public_path('qrcode/qr'.time().'.svg');
-        QrCode::format('svg')->size(80)->errorCorrection('L')->margin(1)->generate(url('parent/dashboard/'.$id), $qrPath);
+        QrCode::format('svg')->size(80)->errorCorrection('L')->margin(1)->generate(url('parent/dashboard/'.$user_id), $qrPath);
         $parents->qr = 'qr'.time().'.svg';
         //guardar
         $parents->save();
